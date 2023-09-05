@@ -14,7 +14,7 @@ public class WaterSkill : MonoBehaviour
     float deg;
     float objSpeed = 500f;
 
-    private void Start()
+    private void Awake()
     {
         objSize = bubble.Length;
         target = GameObject.Find("Player");

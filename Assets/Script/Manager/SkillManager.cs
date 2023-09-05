@@ -60,7 +60,7 @@ public class SkillManager : MonoBehaviour
                 Destroy(Water, 20);
                 break;
             case Skill.Light_Skill:
-                Debug.Log("ºû");
+                GameObject Light = Instantiate(skillPrefab[1]);
                 break;
             case Skill.Dark_Skill:
                 Debug.Log("¾îµÒ");
