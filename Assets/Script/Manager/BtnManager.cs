@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BtnManager : MonoBehaviour
@@ -20,15 +21,53 @@ public class BtnManager : MonoBehaviour
     Lightning   6
     Wind        7
     */
+    // 550 0 -550
 
     void Start()
     {
         sm = GameObject.Find("SkillManager").GetComponent<SkillManager>();
         selectPanel.SetActive(false);
+        for(int i = 0; i < 8; i++) 
+        {
+            Skill_Btn[i].SetActive(false);
+        }
     }
 
     public void ActivePanel()
     {
+        for (int i = 0; i < 8; i++)
+        {
+            Skill_Btn[i].SetActive(false);
+        }
+        for (int i = 1; i < 4; i++)
+        {
+            int rand = Random.Range(0, 7);
+            if (Skill_Btn[rand].activeSelf == true)
+            {
+                i--;
+                //Debug.Log("중복감지!");
+            }
+            else
+            {
+                Skill_Btn[rand].SetActive(true);
+                //Debug.Log(rand);
+                switch (i)
+                {
+                    case 1:
+                        Skill_Btn[rand].GetComponent<RectTransform>().anchoredPosition = new Vector3(550, 0, 0);
+                        break;
+                    case 2:
+                        Skill_Btn[rand].GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                        break;
+                    case 3:
+                        Skill_Btn[rand].GetComponent<RectTransform>().anchoredPosition = new Vector3(-550, 0, 0);
+                        break;
+                    default:
+                        Debug.LogError("변수 벗어남");
+                        break;
+                }
+            } 
+        }
         selectPanel.SetActive(true);
     }
 
@@ -65,4 +104,6 @@ public class BtnManager : MonoBehaviour
         selectPanel.SetActive(false);
         Time.timeScale = 1;
     }
+
+
 }

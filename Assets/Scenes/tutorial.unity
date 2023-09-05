@@ -671,7 +671,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dark
+  m_Text: Tree
 --- !u!222 &418055013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1045,7 +1045,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dark
+  m_Text: Dirt
 --- !u!222 &689265900
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1394,7 +1394,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dark
+  m_Text: Lightning
 --- !u!222 &999591061
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1474,7 +1474,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dark
+  m_Text: Fire
 --- !u!222 &1022653933
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1747,6 +1747,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Select: 0800000008000000
+  skillPrefab:
+  - {fileID: 3499406504767122968, guid: 9d473097ef2dac841be5234e7e3f866a, type: 3}
 --- !u!4 &1233587115
 Transform:
   m_ObjectHideFlags: 0
@@ -2398,7 +2400,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dark
+  m_Text: Wind
 --- !u!222 &1700080195
 CanvasRenderer:
   m_ObjectHideFlags: 0

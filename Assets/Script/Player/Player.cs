@@ -69,6 +69,10 @@ public class Player : MonoBehaviour
             skillManager.UseSkill(skillManager.Select[1]);
         }
         //=====================================================================
+        if(Input.GetKeyDown (KeyCode.Y))
+        {
+            btnManager.ActivePanel();
+        }
     }
 
     void FixedUpdate()

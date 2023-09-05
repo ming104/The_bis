@@ -27,6 +27,7 @@ public enum Skill_Property
 public class SkillManager : MonoBehaviour
 {
     public Skill[] Select;
+    public GameObject[] skillPrefab;
 
     private void Start()
     {
@@ -55,7 +56,8 @@ public class SkillManager : MonoBehaviour
         switch (useSkill)
         {
             case Skill.Water_Skill:
-                Debug.Log("¹°");
+                GameObject Water = Instantiate(skillPrefab[0]);
+                Destroy(Water, 20);
                 break;
             case Skill.Light_Skill:
                 Debug.Log("ºû");
