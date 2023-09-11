@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     //¸Å´ÏÀú
     public SkillManager skillManager;
     public BtnManager btnManager;
+    public Player_LifeBar Player_Life;
 
     private void Awake()
     {
@@ -72,6 +73,10 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown (KeyCode.Y))
         {
             btnManager.ActivePanel();
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Player_Life.SetHp(10);
         }
     }
 

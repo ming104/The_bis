@@ -61,6 +61,7 @@ public class SkillManager : MonoBehaviour
                 break;
             case Skill.Light_Skill:
                 GameObject Light = Instantiate(skillPrefab[1]);
+                Destroy(Light, 10);
                 break;
             case Skill.Dark_Skill:
                 Debug.Log("พ๎ตา");

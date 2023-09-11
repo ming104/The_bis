@@ -15,7 +15,6 @@ public class LightSkill : MonoBehaviour
         target = GameObject.Find("Player");
         player = target.GetComponent<Player>();
         player.maxSpeed = 10f;
-        Invoke("MoveSpeed", 10f);
     }
 
     // Update is called once per frame
@@ -25,9 +24,8 @@ public class LightSkill : MonoBehaviour
         transform.position = new Vector3(target_pos.x, target_pos.y - 0.7f, target_pos.z);
     }
 
-    void MoveSpeed()
+    void OnDestroy()
     {
         player.maxSpeed = 5f;
-        Destroy(gameObject);
     }
 }
