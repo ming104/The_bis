@@ -1,39 +1,59 @@
+using System.Collections;
 using UnityEngine;
 
 public enum Skill
 {
-    Water_Skill, // ÁÖº¯ ÀûÀ» ¶§¸®´Â ¹è¸®¾î
-    Light_Skill, // ÀÌ¼Ó Áõ°¡
-    Dark_Skill, // ÁÖÀ§ Àû °ø°İ·Â, ÀÌ¼Ó °¨¼Ò
-    Fire_Skill, // ¹Ù¶óº¸´Â ¹æÇâ¿¡ È­¿°ÇÇÇØ
-    Dirt_Skill, // ¿ø°Å¸® °ø°İ 1È¸ ¹æ¾î
-    Tree_Skill, // ÇÇÈ¸º¹
-    Lightning_Skill, // ÆòÅ¸ °­È­
-    Wind_Skill, // Á¡¸ê
+    Water_Skill, // ì£¼ë³€ ì ì„ ë•Œë¦¬ëŠ” ë°°ë¦¬ì–´
+    Light_Skill, // ì´ì† ì¦ê°€
+    Dark_Skill, // ì£¼ìœ„ ì  ê³µê²©ë ¥, ì´ì† ê°ì†Œ
+    Fire_Skill, // ë°”ë¼ë³´ëŠ” ë°©í–¥ì— í™”ì—¼í”¼í•´
+    Dirt_Skill, // ì›ê±°ë¦¬ ê³µê²© 1íšŒ ë°©ì–´
+    Tree_Skill, // í”¼íšŒë³µ
+    Lightning_Skill, // í‰íƒ€ ê°•í™”
+    Wind_Skill, // ì ë©¸
     SkillNULL
 }
 public enum Skill_Property
 {
-    Water, // ÁÖº¯ ÀûÀ» ¶§¸®´Â ¹è¸®¾î
-    Light, // ÀÌ¼Ó Áõ°¡
-    Dark, // ÁÖÀ§ Àû °ø°İ·Â, ÀÌ¼Ó °¨¼Ò
-    Fire, // ¹Ù¶óº¸´Â ¹æÇâ¿¡ È­¿°ÇÇÇØ
-    Dirt, // ¿ø°Å¸® °ø°İ 1È¸ ¹æ¾î
-    Tree, // ÇÇÈ¸º¹                      
-    Lightning, // ÆòÅ¸ °­È­
-    Wind // Á¡¸ê
+    Water, // ì£¼ë³€ ì ì„ ë•Œë¦¬ëŠ” ë°°ë¦¬ì–´
+    Light, // ì´ì† ì¦ê°€
+    Dark, // ì£¼ìœ„ ì  ê³µê²©ë ¥, ì´ì† ê°ì†Œ
+    Fire, // ë°”ë¼ë³´ëŠ” ë°©í–¥ì— í™”ì—¼í”¼í•´
+    Dirt, // ì›ê±°ë¦¬ ê³µê²© 1íšŒ ë°©ì–´
+    Tree, // í”¼íšŒë³µ                      
+    Lightning, // í‰íƒ€ ê°•í™”
+    Wind // ì ë©¸
 }
 
 public class SkillManager : MonoBehaviour
 {
-    public Skill[] Select;
+    public Skill[] Select;  
     public GameObject[] skillPrefab;
+    public GameObject Sword;
+    public GameObject player;
+    public Player_LifeBar life;
 
+    public DrawRay_Wind isWS;
+
+    public bool iswallAtiving;
+
+    private bool canDash;
+    [HideInInspector]
+    public bool isDashing;
+    [SerializeField]
+    private float dashingPower = 5f;
+    private float dashingTime = 0.2f;
+    private float dashingCooldown = 1f;
+    [SerializeField] private TrailRenderer tr;
     private void Start()
     {
+        canDash = true;
+        iswallAtiving = false;
         Select[0] = Skill.SkillNULL;
         Select[1] = Skill.SkillNULL;
+
     }
+
 
     public Skill SetSkill(Skill_Property property)
     {
@@ -51,44 +71,76 @@ public class SkillManager : MonoBehaviour
             };
     }
 
-    public void UseSkill(Skill useSkill) // ½ºÅ³ »ç¿ë½Ã
+    public void UseSkill(Skill useSkill) // ìŠ¤í‚¬ ì‚¬ìš©ì‹œ
     {
         switch (useSkill)
         {
             case Skill.Water_Skill:
                 GameObject Water = Instantiate(skillPrefab[0]);
                 Destroy(Water, 20);
+
                 break;
             case Skill.Light_Skill:
                 GameObject Light = Instantiate(skillPrefab[1]);
                 Destroy(Light, 10);
                 break;
             case Skill.Dark_Skill:
-                Debug.Log("¾îµÒ");
+                GameObject Dark = Instantiate(skillPrefab[2]);
+                Dark.transform.SetParent(player.transform, false);
+                Destroy(Dark, 10);
                 break;
             case Skill.Fire_Skill:
-                Debug.Log("ºÒ");
+                GameObject Fire = Instantiate(skillPrefab[3]);
+                Fire.transform.localEulerAngles = new Vector3(0, 90 * player.transform.localScale.x,0);
+                Fire.transform.position = player.transform.position;
+                
                 break;
             case Skill.Dirt_Skill:
-                Debug.Log("Èë");
+                if (!iswallAtiving) // is disabled
+                {
+                    GameObject Dirt_Wall = Instantiate(skillPrefab[4]) as GameObject;
+                    Dirt_Wall.transform.position = new Vector3(player.transform.position.x + 3f * player.transform.localScale.x, player.transform.position.y, 0f);
+                    iswallAtiving = true;
+                }
+                else
+                {
+                    iswallAtiving = false;
+                    Destroy(GameObject.FindGameObjectWithTag("Dirt_Wall"));
+                }
                 break;
             case Skill.Tree_Skill:
-                Debug.Log("³ª¹«");
+                GameObject Tree = Instantiate(skillPrefab[5]) as GameObject;
+                Tree.transform.SetParent(player.transform, false);
+                life.TreeSkill();
                 break;
             case Skill.Lightning_Skill:
-                Debug.Log("¹ø°³");
+                GameObject Lightning = Instantiate(skillPrefab[6])as GameObject;
+                Lightning.transform.SetParent(Sword.transform, false);
+                Destroy(Lightning, 30);
                 break;
             case Skill.Wind_Skill:
-                Debug.Log("¹Ù¶÷");
+                if (canDash == true && isWS.isWindSkill(player.transform.localScale.x) == true )
+                {
+                    StartCoroutine(WindSkill());
+                }
                 break;
         }
 
     }
 
-
-
-    //public Skill GetSkill_Second()
-    //{
-    //    return Select[1];
-    //}
+    private IEnumerator WindSkill()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = player.GetComponent<Rigidbody2D>().gravityScale;
+        player.GetComponent<Rigidbody2D>().gravityScale = 0f;
+        player.transform.Translate(Vector2.right * dashingPower * player.transform.localScale.x);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        player.GetComponent<Rigidbody2D>().gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+    }
 }

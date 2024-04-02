@@ -1,35 +1,34 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ Á¦¾î
+    //Player Move Control
     public float maxSpeed;
     public float jumpPower;
     public bool isJump;
     private Vector3 scale;
 
-    //ÇÃ·¹ÀÌ¾î °ø°İ
+    //PlayerAttack
     private BoxCollider2D weaponCol;
 
-    //ÇÃ·¹ÀÌ¾î ÄÄÆ÷³ÍÆ®
+    //Player Component
     Rigidbody2D rb;
     SpriteRenderer sr;
     Animator animator;
 
-    //¸Å´ÏÀú
+    //managers
     public SkillManager skillManager;
     public BtnManager btnManager;
     public Player_LifeBar Player_Life;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>(); // ¸®Áöµå¹Ùµğ ÃÊ±âÈ­ 
-        sr = GetComponent<SpriteRenderer>(); // ½ºÇÁ¶óÀÌÆ® ·£´õ·¯ ÃÊ±âÈ­
-        animator = GetComponent<Animator>(); // ¾Ö´Ï¸ŞÀÌÅÍ ÃÊ±âÈ­
-        weaponCol = GetComponentInChildren<BoxCollider2D>(); // ¹Ú½ºÄİ¶óÀÌ´õ
-        skillManager = GameObject.Find("SkillManager").GetComponent<SkillManager>();
+        rb = GetComponent<Rigidbody2D>(); // Rigid Reset
+        sr = GetComponent<SpriteRenderer>(); // SpriteRenderer Reset
+        animator = GetComponent<Animator>(); // Animator reset
+        weaponCol = GetComponentInChildren<BoxCollider2D>(); // BoxCollider2D reset
+        skillManager = GameObject.Find("SkillManager").GetComponent<SkillManager>(); // Find SkillManager to reset
     }
 
     void Start()
@@ -41,10 +40,10 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ °ü·Ã================================================
-        if(Input.GetButtonUp("Horizontal")) // ÁÂ¿ì Å°º¸µå¿¡¼­ ¼Õ ¶ª¶§ // ¸ØÃã ÄÚµå
+        // PlayerMove ================================================
+        if(Input.GetButtonUp("Horizontal")) // í‚¤ë³´ë“œì—ì„œ ì† ë•”ë•Œ // ë©ˆì¶¤ ì½”ë“œ
         {
-            // rb.velocity.normalized.x ÁÂ¿ì ±¸ºĞÀ» À§ÇØ ³ÖÀ½
+            // rb.velocity.normalized.x  //ì¢Œìš° êµ¬ë¶„ì„ ìœ„í•´ ë„£ìŒ
             rb.velocity = new Vector2(0.3f * rb.velocity.normalized.x, rb.velocity.y);
         }
 
@@ -55,17 +54,17 @@ public class Player : MonoBehaviour
         }
         //=====================================================================
 
-        //ÇÃ·¹ÀÌ¾î °ø°İ °ü·Ã ==================================================
+        //PlayerAttack ==================================================
         if(Input.GetKeyDown(KeyCode.J) 
-            && !animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1")) // ±âº»°ø°İ
+            && !animator.GetCurrentAnimatorStateInfo(0).IsName("SwordAttack1")) // DefaultAttack
         {
             animator.SetTrigger("Default_Attack");
         }
-        if(Input.GetKeyDown(KeyCode.K)) // ½ºÅ³ 1
+        if(Input.GetKeyDown(KeyCode.K)) // skill 1
         {
             skillManager.UseSkill(skillManager.Select[0]);
         }
-        if(Input.GetKeyDown(KeyCode.L)) // ½ºÅ³ 2
+        if(Input.GetKeyDown(KeyCode.L)) // skill 2
         {
             skillManager.UseSkill(skillManager.Select[1]);
         }
@@ -82,27 +81,33 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        float h = Input.GetAxisRaw("Horizontal"); // Å°º¸µå ÁÂ¿ì ÀÌµ¿
-        rb.AddForce(Vector2.right * h, ForceMode2D.Impulse); // ¿À¸¥ÂÊÀ¸·Î ÈûÀ» ÇÑ¹ø¿¡ È® °¡ÇÔ
-        if (rb.velocity.x > maxSpeed)  // ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÔ, ÃÖ´ë ¼Ó·ÂÀ» ¸¸¾à ³ÑÀ¸¸é
+        float h = Input.GetAxisRaw("Horizontal"); // Keyboard Horizontal
+        rb.AddForce(Vector2.right * h, ForceMode2D.Impulse); // Right -> AddForce
+        if (rb.velocity.x > maxSpeed)  // ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™í•¨, ë§Œì•½ ìµœëŒ€ ì†ë ¥ì„ ë„˜ìœ¼ë©´
         {
-            rb.velocity = new Vector2(maxSpeed, rb.velocity.y); // ¼Ó·ÂÀ» max·Î
+            rb.velocity = new Vector2(maxSpeed, rb.velocity.y); // ì†ë ¥ì„ Maxë§Œí¼ìœ¼ë¡œ ë°”ê¿ˆ
 
             transform.localScale = new Vector3(scale.x, scale.y, scale.z);
         }
 
-        else if(rb.velocity.x < maxSpeed * (-1)) // ¿ŞÂÊÀ¸·Î ÀÌµ¿ÇÔ
+        else if(rb.velocity.x < maxSpeed * (-1)) // ì™¼ìª½ìœ¼ë¡œ ì´ë™
         {
-            rb.velocity = new Vector2(maxSpeed * (-1), rb.velocity.y); // y°ªÀº Á¡ÇÁÀÇ ¿µÇâÀÌ¹Ç·Î 0À¸·Î Á¦ÇÑÇÏ¸é Á¡ÇÁ¾ÈÇÔ
+            rb.velocity = new Vector2(maxSpeed * (-1), rb.velocity.y); // yê°’ì€ ì í”„ì˜ ì˜í–¥ì´ë¯€ë¡œ 0ìœ¼ë¡œ ì œí•œì‹œ ì í”„ë¥¼ í•˜ì§€ ì•ŠìŒ
             transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Ground")
+        if(collision.gameObject.CompareTag("Ground"))
         {
             isJump = false;
+        }
+        if(collision.gameObject.CompareTag("Enemy_Attack_Collider"))
+        {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            Debug.Log(enemy.GetDamage());
+            Player_Life.SetHp(enemy.GetDamage());
         }
     }
 }

@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Dirt_Wall
+  - Enemy
+  - DarkSkill_tag
+  - Undefined
+  - Enemy_Attack_Collider
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BtnManager : MonoBehaviour
@@ -27,7 +24,7 @@ public class BtnManager : MonoBehaviour
     {
         sm = GameObject.Find("SkillManager").GetComponent<SkillManager>();
         selectPanel.SetActive(false);
-        for(int i = 0; i < 8; i++) 
+        for (int i = 0; i < 8; i++) 
         {
             Skill_Btn[i].SetActive(false);
         }
@@ -35,17 +32,17 @@ public class BtnManager : MonoBehaviour
 
     public void ActivePanel()
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 8; i++) // 8ê°œë¥¼ ë”
         {
             Skill_Btn[i].SetActive(false);
         }
-        for (int i = 1; i < 4; i++)
+        for (int i = 1; i < 4; i++) // ê·¸ì¤‘ 3ê°œë¥¼ ë½‘ìŒ
         {
-            int rand = Random.Range(0, 7);
-            if (Skill_Btn[rand].activeSelf == true)
+            int rand = Random.Range(0, 8);
+            if (Skill_Btn[rand].activeSelf || (int)sm.Select[0] == rand)
             {
                 i--;
-                //Debug.Log("Áßº¹°¨Áö!");
+                //Debug.Log("ì¤‘ë³µê°ì§€!");
             }
             else
             {
@@ -63,7 +60,7 @@ public class BtnManager : MonoBehaviour
                         Skill_Btn[rand].GetComponent<RectTransform>().anchoredPosition = new Vector3(-550, 0, 0);
                         break;
                     default:
-                        Debug.LogError("º¯¼ö ¹þ¾î³²");
+                        Debug.LogError("ë³€ìˆ˜ ë²—ì–´ë‚¨: " + i);
                         break;
                 }
             } 

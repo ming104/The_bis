@@ -1,0 +1,4 @@
+{
+  "dotnet.preferCSharpExtension": true,
+  "dotnet.defaultSolution": "The_bis.sln"
+}

@@ -13,10 +13,12 @@ public class Player_LifeBar : MonoBehaviour
     float currentHp;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        Life_Bar.maxValue = maxHp;
         currentHp = maxHp;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -32,5 +34,22 @@ public class Player_LifeBar : MonoBehaviour
     public void SetHp(float hp)
     {
         currentHp -= hp;
+    }
+
+    public void TreeSkill()
+    {
+        StartCoroutine(Tree_Heal_Skill());
+    }
+
+    IEnumerator Tree_Heal_Skill()
+    {
+        for(int i = 0; i < 18; i++)
+        {
+            if(currentHp < maxHp)
+            {
+                yield return new WaitForSeconds(0.5f);
+                currentHp++;
+            }
+        }
     }
 }
